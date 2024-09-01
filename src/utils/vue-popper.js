@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import {createPopper} from '@popperjs/core';
 import {
   PopupManager
 } from 'element-ui/src/utils/popup';
@@ -38,6 +39,15 @@ export default {
     arrowOffset: {
       type: Number,
       default: 35
+    },
+    /**
+     * the min distance from arrow to the edges of the popper
+     * it's useful when reference scroll out of viewport
+     * the corner of popper maybe round and the edge of arrow triangle will overflow the reference
+     */
+    arrowPadding: {
+      type: Number,
+      default: 5
     },
     appendToBody: {
       type: Boolean,
@@ -95,24 +105,59 @@ export default {
       }
 
       if (!popper || !reference) return;
-      if (this.visibleArrow) this.appendArrow(popper);
+
+      let arrowEl;
+      if (this.visibleArrow) {
+        this.appendArrow(popper);
+        arrowEl = popper.querySelector('[data-popper-arrow]');
+      };
       if (this.appendToBody) document.body.appendChild(this.popperElm);
       if (this.popperJS && this.popperJS.destroy) {
         this.popperJS.destroy();
       }
 
       options.placement = this.currentPlacement;
-      options.offset = this.offset;
-      options.arrowOffset = this.arrowOffset;
-      this.popperJS = new PopperJS(reference, popper, options);
-      this.popperJS.onCreate(_ => {
+      // options.offset = this.offset;
+      // options.arrowOffset = this.arrowOffset;
+
+      options.modifiers = [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, ((this.offset || 0) + (this.visibleArrow && arrowEl) ? parseInt(window.getComputedStyle(arrowEl).borderWidth, 10) : 0) + 6]
+          }
+        }
+      ];
+      if (this.visibleArrow && arrowEl) {
+        options.modifiers.push(
+          {
+            name: 'arrow',
+            options: {
+              padding: this.arrowPadding,
+              element: popper.querySelector('[data-popper-arrow]')
+            }
+          }
+        );
+      };
+      options.onFirstUpdate = _ => {
         this.$emit('created', this);
         this.resetTransformOrigin();
         this.$nextTick(this.updatePopper);
-      });
+      };
+      // https://popper.js.org/docs/v2/migration-guide/#9-update-callbacks
       if (typeof options.onUpdate === 'function') {
-        this.popperJS.onUpdate(options.onUpdate);
+        options.modifiers.push({
+          name: 'runAfterUpdate',
+          phase: 'afterWrite',
+          enabled: true,
+          fn: (...args) => {
+            options.onUpdate(...args);
+          }
+        });
       }
+      this.popperJS = createPopper(reference, popper, options);
+
+      this.popperJS._popper = popper;
       this.popperJS._popper.style.zIndex = PopupManager.nextZIndex();
       this.popperElm.addEventListener('click', stop);
     },
@@ -150,7 +195,7 @@ export default {
         left: 'right',
         right: 'left'
       };
-      let placement = this.popperJS._popper.getAttribute('x-placement').split('-')[0];
+      let placement = this.popperJS._popper.getAttribute('data-popper-placement').split('-')[0];
       let origin = placementMap[placement];
       this.popperJS._popper.style.transformOrigin = typeof this.transformOrigin === 'string'
         ? this.transformOrigin
@@ -177,7 +222,7 @@ export default {
       if (hash) {
         arrow.setAttribute(hash, '');
       }
-      arrow.setAttribute('x-arrow', '');
+      arrow.setAttribute('data-popper-arrow', '');
       arrow.className = 'popper__arrow';
       element.appendChild(arrow);
     }

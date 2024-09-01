@@ -34,11 +34,11 @@
       border-width: 5px;
     }
 
-    &[x-placement^="top"] {
+    &[data-popper-placement^="top"] {
       margin-bottom: #{$--tooltip-arrow-size + 6px};
     }
 
-    &[x-placement^="top"] .popper__arrow {
+    &[data-popper-placement^="top"] .popper__arrow {
       bottom: -$--tooltip-arrow-size;
       border-top-color: $--tooltip-border-color;
       border-bottom-width: 0;
@@ -51,11 +51,11 @@
       }
     }
 
-    &[x-placement^="bottom"] {
+    &[data-popper-placement^="bottom"] {
       margin-top: #{$--tooltip-arrow-size + 6px};
     }
 
-    &[x-placement^="bottom"] .popper__arrow {
+    &[data-popper-placement^="bottom"] .popper__arrow {
       top: -$--tooltip-arrow-size;
       border-top-width: 0;
       border-bottom-color: $--tooltip-border-color;
@@ -68,11 +68,11 @@
       }
     }
 
-    &[x-placement^="right"] {
+    &[data-popper-placement^="right"] {
       margin-left: #{$--tooltip-arrow-size + 6px};
     }
 
-    &[x-placement^="right"] .popper__arrow {
+    &[data-popper-placement^="right"] .popper__arrow {
       left: -$--tooltip-arrow-size;
       border-right-color: $--tooltip-border-color;
       border-left-width: 0;
@@ -85,11 +85,11 @@
       }
     }
 
-    &[x-placement^="left"] {
+    &[data-popper-placement^="left"] {
       margin-right: #{$--tooltip-arrow-size + 6px};
     }
 
-    &[x-placement^="left"] .popper__arrow {
+    &[data-popper-placement^="left"] .popper__arrow {
       right: -$--tooltip-arrow-size;
       border-right-width: 0;
       border-left-color: $--tooltip-border-color;
@@ -112,25 +112,25 @@
       background: $--tooltip-color;
       border: 1px solid $--tooltip-fill;
 
-      &[x-placement^="top"] .popper__arrow {
+      &[data-popper-placement^="top"] .popper__arrow {
         border-top-color: $--tooltip-fill;
         &::after {
           border-top-color: $--tooltip-color;
         }
       }
-      &[x-placement^="bottom"] .popper__arrow {
+      &[data-popper-placement^="bottom"] .popper__arrow {
         border-bottom-color: $--tooltip-fill;
         &::after {
           border-bottom-color: $--tooltip-color;
         }
       }
-      &[x-placement^="left"] .popper__arrow {
+      &[data-popper-placement^="left"] .popper__arrow {
         border-left-color: $--tooltip-fill;
         &::after {
           border-left-color: $--tooltip-color;
         }
       }
-      &[x-placement^="right"] .popper__arrow {
+      &[data-popper-placement^="right"] .popper__arrow {
         border-right-color: $--tooltip-fill;
         &::after {
           border-right-color: $--tooltip-color;
