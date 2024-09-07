@@ -132,7 +132,7 @@ export default {
         this.closed = false;
         this.$emit('open');
         if (this.appendToBody) {
-          document.body.appendChild(this.$el);
+          this.$elBodyLevelElement.appendChild(this.$el);
         }
         this.prevActiveElement = document.activeElement;
       } else {
@@ -191,7 +191,7 @@ export default {
       this.rendered = true;
       this.open();
       if (this.appendToBody) {
-        document.body.appendChild(this.$el);
+        this.$elBodyLevelElement.appendChild(this.$el);
       }
     }
   },

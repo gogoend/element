@@ -30,7 +30,7 @@ const Notification = function(options) {
   }
   instance.id = id;
   instance.$mount();
-  document.body.appendChild(instance.$el);
+  Vue.prototype.$elBodyLevelElement.appendChild(instance.$el);
   instance.visible = true;
   instance.dom = instance.$el;
   instance.dom.style.zIndex = PopupManager.nextZIndex();

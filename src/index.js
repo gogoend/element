@@ -204,6 +204,7 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$notify = Notification;
   Vue.prototype.$message = Message;
 
+  Vue.prototype.$elBodyLevelElement = opts.bodyLevelElement || document.body;
 };
 
 /* istanbul ignore if */

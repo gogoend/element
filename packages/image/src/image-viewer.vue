@@ -314,7 +314,7 @@ export default {
   mounted() {
     this.deviceSupportInstall();
     if (this.appendToBody) {
-      document.body.appendChild(this.$el);
+      this.$elBodyLevelElement.appendChild(this.$el);
     }
     // add tabindex then wrapper can be focusable via Javascript
     // focus wrapper so arrow key can't cause inner scroll behavior underneath

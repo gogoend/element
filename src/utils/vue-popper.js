@@ -111,7 +111,7 @@ export default {
         this.appendArrow(popper);
         arrowEl = popper.querySelector('[data-popper-arrow]');
       };
-      if (this.appendToBody) document.body.appendChild(this.popperElm);
+      if (this.appendToBody) this.$elBodyLevelElement.appendChild(this.popperElm);
       if (this.popperJS && this.popperJS.destroy) {
         this.popperJS.destroy();
       }
@@ -230,9 +230,9 @@ export default {
 
   beforeDestroy() {
     this.doDestroy(true);
-    if (this.popperElm && this.popperElm.parentNode === document.body) {
+    if (this.popperElm && this.popperElm.parentNode === this.$elBodyLevelElement) {
       this.popperElm.removeEventListener('click', stop);
-      document.body.removeChild(this.popperElm);
+      this.$elBodyLevelElement.removeChild(this.popperElm);
     }
   },
 
